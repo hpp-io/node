@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  eigenda-proxy:
+    image: ghcr.io/layr-labs/eigenda-proxy:v1.8.2
+    ports:
+      - "3100:3100"
+    env_file:
+      - .env.eigenda.sepolia
+    command: [
+      "--addr", "0.0.0.0",
+      "--port", "3100",
+      "--api-enabled", "admin"
+    ]
+
+  nitro-node:
+    image: ghcr.io/layr-labs/nitro/nitro-node:v3.5.7
+    container_name: hpp-node-sepolia
+    volumes:
+      - ./hpp-sepolia-node-config.json:/config/nodeConfig.json
+      - ./hpp-sepolia/data:/home/user/.arbitrum
+    ports:
+      - "8547:8547"
+      - "8548:8548"
+    command:
+      [
+        "--conf.file", "/config/nodeConfig.json"
+      ]
+    restart: unless-stopped
+    depends_on:
+      - eigenda-proxy
