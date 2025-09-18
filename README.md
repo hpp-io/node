@@ -165,4 +165,4 @@ For support please join discussions on [Telegram](https://t.me/aergoofficial), o
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or
 security. Usage is subject to applicable laws and regulations.
 
-For more information, visit [docs.base.org](https://docs.hpp.io/).
+For more information, visit [docs.hpp.io](https://docs.hpp.io/).
