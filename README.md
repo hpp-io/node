@@ -56,7 +56,7 @@ Please note that:
 2. Modify the configuration of Arbitrum Nitro
 
    Update the required fields in the `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file to align 
-with the target chain. For additional details, refer to the [Configuration] section below.
+with the target chain. For additional details, refer to the [Configuration](#configuration) section below.
 
      ```json
        {
@@ -116,7 +116,7 @@ with the target chain. For additional details, refer to the [Configuration] sect
 
    ```
 
-   You can use helper script `manage.sh` to start/stop the node:
+   You can alternatively use helper script `manage.sh` to start/stop the node:
 
    ```bash
    ./manage.sh run           # Starts the container for the mainnet (default)
