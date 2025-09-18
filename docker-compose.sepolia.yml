@@ -23,7 +23,11 @@ services:
       - "8548:8548"
     command:
       [
-        "--conf.file", "/config/nodeConfig.json"
+        "--conf.file", "/config/nodeConfig.json",
+        # Passing the configurations of http because they are not working by config file, but I don't know why.
+        "--http.api", "web3,net,eth",
+        "--http.addr", "0.0.0.0",
+        "--http.corsdomain", "*"
       ]
     restart: unless-stopped
     depends_on:

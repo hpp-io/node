@@ -1,20 +1,20 @@
 {
   "chain": {
-    "info-json": "[{\"chain-id\":190415,\"parent-chain-id\":1,\"chain-name\":\"conduit-orbit-deployer\",\"chain-config\":{\"chainId\":190415,\"homesteadBlock\":0,\"daoForkBlock\":null,\"daoForkSupport\":true,\"eip150Block\":0,\"eip150Hash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":true,\"InitialArbOSVersion\":32,\"InitialChainOwner\":\"0xF91B7476e52374dD75fb3d598C5f2D5dc019fc90\",\"GenesisBlockNum\":0}},\"rollup\":{\"bridge\":\"0x9948eDFBb9e0b104bAd60393dBe79d0BC7937014\",\"inbox\":\"0xE0400a87d5Ee8a2Fc1dF2aAf4B6d8f89d0B9bE55\",\"sequencer-inbox\":\"0x9B26957a661bc862FA0d7eb21813Aa008d0Cc6E6\",\"rollup\":\"0xf0d2960a37B33567FF7507C2d59da021277663A1\",\"validator-utils\":\"0x84eA2523b271029FFAeB58fc6E6F1435a280db44\",\"validator-wallet-creator\":\"0x0A5eC2286bB15893d5b8f320aAbc823B2186BA09\",\"deployed-at\":22943219}}]",
+    "info-json": "[{\"chain-id\":181228,\"parent-chain-id\":11155111,\"chain-name\":\"conduit-orbit-deployer\",\"chain-config\":{\"chainId\":181228,\"homesteadBlock\":0,\"daoForkBlock\":null,\"daoForkSupport\":true,\"eip150Block\":0,\"eip150Hash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":true,\"InitialArbOSVersion\":32,\"InitialChainOwner\":\"0x3324DC1E72Ee0C0D0483503B5d36A592bfC862D9\",\"GenesisBlockNum\":0}},\"rollup\":{\"bridge\":\"0x1DDe0F57E7889B6866505634E58E3057b01dfed0\",\"inbox\":\"0xAAD45a7bF65b43E56767CdE3Ab84A5433c714Afc\",\"sequencer-inbox\":\"0x7A6398deA2adc6fe4A3cfBA3352840bB03e440d3\",\"rollup\":\"0x60b33120F5572608CC33c5C3a40c992987B59Edc\",\"validator-utils\":\"0x9d502DD38E6E7FBdd3b7e964345d544ec37f1D72\",\"validator-wallet-creator\":\"0x684A827456373a0C0379B1C82BA31Ee5E4F88F62\",\"deployed-at\":8539104} }]",
     "name": "conduit-orbit-deployer"
   },
   "parent-chain": {
     "connection": {
-      "url": "https://ethereum-rpc.publicnode.com"
+      "url": "https://ethereum-sepolia-rpc.publicnode.com"
     },
     "blob-client": {
-      "beacon-url": "https://ethereum-beacon-api.publicnode.com"
+      "beacon-url": "https://ethereum-sepolia-beacon-api.publicnode.com"
     }
   },
   "node": {
     "feed": {
       "input": {
-        "url": "wss://relay-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
+        "url": "wss://relay-hpp-sepolia-turdrv0107.t.conduit.xyz"
       }
     },
     "batch-poster": {
@@ -28,12 +28,12 @@
       "enable": true,
       "rest-aggregator": {
         "enable": true,
-        "urls": "https://das-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
+        "urls": "https://das-hpp-sepolia-turdrv0107.t.conduit.xyz"
       }
     }
   },
   "execution": {
-    "forwarding-target": "https://mainnet.hpp.io"
+    "forwarding-target": "https://rpc-hpp-sepolia-turdrv0107.t.conduit.xyz"
   },
   "http": {
     "api": "net,web3,eth",

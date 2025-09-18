@@ -1,23 +1,50 @@
-![HPP](logo.webp)
+![HPP](./assets/HPP_primary_black.svg)
 
 # Overview
 
-TODO: need to fill overview 
+House Party Protocol (HPP) is a cost-efficient, scalable, and developer-friendly Layer 2 (L2) network built on the 
+Arbitrum Orbit. Secured by Ethereum and enhanced through data availability with Eigen DA, HPP delivers modular and 
+performant infrastructure for the next generation of decentralized applications.
 
+This repository contains Docker builds and guide to run your own node on the HPP network.
 
-## Quick Start
+## Requirements
+
+### Minimum hardware configuration
+
+The following is the minimum hardware configuration required to set up a Nitro full node (not archival):
+
+| Resource     | Recommended                                   |
+|--------------|-----------------------------------------------|
+| RAM          | 16 GB                                         |
+| CPU          | 4 core CPU (for AWS, a t3 xLarge instance)    |
+| Storage Type | NVMe SSD drives are recommended               |
+| Storage size | Depends on the chain and its traffic overtime |
+
+Please note that:
+
+* These minimum requirements for RAM and CPU are recommended for nodes that process a small number of RPC requests. For
+  nodes that require processing multiple simultaneous requests, both RAM and number of CPU cores will need to be scaled
+  with the amount of traffic being served.
+* Single core performance is important. If the node is falling behind and a single core is 100% busy, it is recommended
+  to update to a faster processor
+* The minimum storage requirements will change over time as the chain grows. Using more than the minimum requirements to
+  run a robust full node is recommended.
 
 ### Prerequisites
 
-You should have an access point to Ethereum L1 full node RPC
+1. Download and install [Docker](https://www.docker.com/), ensure it is running.
+2. Unlimited rate limit Ethereum RPC endpoint and beacon chain RPC endpoint
+
+## Quick Start
 
 ### Running the Node
 
 1. Configure your L1 endpoints in the appropriate `.env` file:
 
-    If you are running the node on mainnet or testnet, refer to `.env.eigenda.mainnet` or `.env.eigenda.sepolia`
+   If you are running the node on mainnet or testnet, refer to `.env.eigenda.mainnet` or `.env.eigenda.sepolia`
 
-   ```yaml
+   ```properties
    # EigenDA Proxy - .env.eigenda.mainnet
     EIGENDA_PROXY_EIGENDA_DISPERSER_RPC=disperser.eigenda.xyz:443
     EIGENDA_PROXY_EIGENDA_STATUS_QUERY_INTERVAL=5s
@@ -27,8 +54,9 @@ You should have an access point to Ethereum L1 full node RPC
    ```
 
 2. Modify the configuration of Arbitrum Nitro
-    
-    Refer to `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json`.
+
+   Update the required fields in the `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file to align 
+with the target chain. For additional details, refer to the [Configuration](#configuration) section below.
 
      ```json
        {
@@ -88,7 +116,7 @@ You should have an access point to Ethereum L1 full node RPC
 
    ```
 
-    You can use helper script `manage.sh` to start/stop the node:
+   You can alternatively use helper script `manage.sh` to start/stop the node:
 
    ```bash
    ./manage.sh run           # Starts the container for the mainnet (default)
@@ -97,29 +125,44 @@ You should have an access point to Ethereum L1 full node RPC
    ./manage.sh clear         # Clears the containers for the "mainnet" (default)
    ```
 
-## Requirements
-
-The following are the hardware specifications we use in production:
-
 ## Configuration
 
 ### Required Settings
 
-- L1 Configuration:
+- `.env` file
+  - `EIGENDA_PROXY_EIGENDA_ETH_RPC`: The URL of the Ethereum L1 node RPC endpoint
+- `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file
+  - `parent-chain.connection.url`: The URL of the Ethereum L1 node RPC endpoint
+  - `parent-chain.blob-client.beacon-url`: The URL of the Ethereum L1 beacon node endpoint
+  - `node.eigen-da.rpc`: The URL of the EigenDA RPC endpoint
+
+#### RPC endpoint
+
+The RPC endpoint provided in the example configuration, `https://ethereum-rpc.publicnode.com`, is a free service 
+that is not enough for use in the node due to the usage limits. It is recommended to use an unlimited RPC endpoint 
+service. Users must subscribe to such a service and replace the example configuration with the RPC endpoint provided 
+by the service.
+
+For instance, when using Alchemy RPC, the RPC endpoint should be defined in the configuration as follows:
+
+```properties
+EIGENDA_PROXY_EIGENDA_ETH_RPC=https://eth-mainnet.g.alchemy.com/v2/3AbCdEfGh78JkL_zPxDdf
+```
 
 ## Supported Networks
 
 | Network | Status |
-| ------- | ------ |
-| Mainnet | ✅     |
-| Testnet | ✅     |
+|---------|--------|
+| Mainnet | ✅      |
+| Testnet | ✅      |
 
 ## Troubleshooting
 
-TODO: need to fill troubleshooting
+For support please join discussions on [Telegram](https://t.me/aergoofficial), or open a new GitHub issue.
 
 ## Disclaimer
 
-THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
+THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or
+security. Usage is subject to applicable laws and regulations.
 
-For more information, visit [docs.base.org](https://docs.hpp.io/).
+For more information, visit [docs.hpp.io](https://docs.hpp.io/).
