@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   eigenda-proxy:
-    image: ghcr.io/layr-labs/eigenda-proxy:v1.8.2
+    image: ghcr.io/layr-labs/eigenda-proxy:2.2.1
     ports:
       - "3100:3100"
     env_file:
@@ -13,16 +13,18 @@ services:
     ]
 
   nitro-node:
-    image: ghcr.io/layr-labs/nitro/nitro-node:v3.5.7
+    image: ghcr.io/layr-labs/nitro/nitro-node:v3.7.4
     container_name: hpp-node-sepolia
     volumes:
       - ./hpp-sepolia-node-config.json:/config/nodeConfig.json
       - ./hpp-sepolia/data:/home/user/.arbitrum
+      - ./hpp-sepolia/latest-sepolia.tar:/home/user/snapshots.tar
     ports:
       - "8547:8547"
       - "8548:8548"
     command:
       [
+        "--init.url", "file:///home/user/snapshots.tar",
         "--conf.file", "/config/nodeConfig.json",
         # Passing the configurations of http because they are not working by config file, but I don't know why.
         "--http.api", "web3,net,eth",
