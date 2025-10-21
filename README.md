@@ -53,7 +53,36 @@ Please note that:
     EIGENDA_PROXY_EIGENDA_SERVICE_MANAGER_ADDR=0x870679E138bCdf293b7Ff14dD44b70FC97e12fc0
    ```
 
-2. Modify the configuration of Arbitrum Nitro
+2. Download the snapshot of the HPP chain
+
+   HPP is a chain based on Arbitrum Nitro, and it supports synchronization from snapshots. 
+   The default configuration file starts synchronization by reading the snapshot file located at the specified path. 
+   If the node has been inactive for more than two weeks since its last successful sync, it is recommended to resynchronize the node using a new snapshot
+
+   The following command downloads the snapshot for the mainnet.
+   ```shell
+   # download mainnet snapshot
+   curl -o hpp-mainnet/snapshot-mainnet.tar  https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
+   ```
+   You can download the snapshot for the testnet from the following link: https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
+
+3. Modifying the docker compose configuration (Optional)
+
+   The default `docker-compose.yml` file is configured to synchronize using a snapshot. If you are not using a snapshot, you must remove the relevant settings from the configuration.
+
+   ```yaml
+   volumes:
+     # If snapshots are not used, remove the following line
+     - ./hpp-mainnet/snapshot-mainnet.tar:/hpp-mainnet/snapshot.tar:ro
+   # Remaining lines omitted for brevity
+   command:
+   [
+     # Remove the following line when snapshots are not used
+     "--init.url", "file:///home/user/snapshots.tar",
+   # Remaining lines omitted for brevity
+   ```
+
+4. Modify the configuration of Arbitrum Nitro
 
    Update the required fields in the `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file to align 
 with the target chain. For additional details, refer to the [Configuration](#configuration) section below.
@@ -104,8 +133,7 @@ with the target chain. For additional details, refer to the [Configuration](#con
       }
     }
     ```
-
-3. Start the node:
+5. Start the node:
 
    ```bash
    # For mainnet (default):
@@ -128,6 +156,8 @@ with the target chain. For additional details, refer to the [Configuration](#con
 ## Configuration
 
 ### Required Settings
+
+These fields in example files contain URLs for public RPC endpoints with rate limits. For production use, you must replace them with your own unlimited RPC endpoints.
 
 - `.env` file
   - `EIGENDA_PROXY_EIGENDA_ETH_RPC`: The URL of the Ethereum L1 node RPC endpoint

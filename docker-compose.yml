@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   eigenda-proxy:
-    image: ghcr.io/layr-labs/eigenda-proxy:v1.8.2
+    image: ghcr.io/layr-labs/eigenda-proxy:2.2.1
     ports:
       - "3100:3100"
     env_file:
@@ -13,17 +13,19 @@ services:
     ]
 
   nitro-node:
-    image: ghcr.io/layr-labs/nitro/nitro-node:v3.5.7
+    image: ghcr.io/layr-labs/nitro/nitro-node:v3.7.4
     container_name: hpp-node-mainnet
     volumes:
       - ./hpp-mainnet-node-config.json:/config/nodeConfig.json
       - ./hpp-mainnet/data:/home/user/.arbitrum
+      - ./hpp-mainnet/snapshot-mainnet.tar:/home/user/snapshots.tar
     ports:
       - "8547:8547"
       - "8548:8548"
     # Passing the configurations of http because they are not working by config file, but I don't know why.
     command:
       [
+        "--init.url", "file:///home/user/snapshots.tar",
         "--conf.file", "/config/nodeConfig.json",
         "--http.api", "web3,net,eth",
         "--http.addr", "0.0.0.0",
