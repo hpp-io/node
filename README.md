@@ -59,10 +59,12 @@ Please note that:
    The default configuration file starts synchronization by reading the snapshot file located at the specified path. 
    If the node has been inactive for more than two weeks since its last successful sync, it is recommended to resynchronize the node using a new snapshot
 
+   The following command downloads the snapshot for the mainnet.
    ```shell
    # download mainnet snapshot
    curl -o hpp-mainnet/snapshot-mainnet.tar  https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
    ```
+   You can download the snapshot for the testnet from the following link: https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
 
 3. Modifying the docker compose configuration (Optional)
 
