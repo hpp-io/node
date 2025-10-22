@@ -18,7 +18,7 @@ services:
     volumes:
       - ./hpp-sepolia-node-config.json:/config/nodeConfig.json
       - ./hpp-sepolia/data:/home/user/.arbitrum
-      - ./hpp-sepolia/latest-sepolia.tar:/home/user/snapshots.tar
+      - ./hpp-sepolia/snapshot-sepolia.tar:/home/user/snapshots.tar
     ports:
       - "8547:8547"
       - "8548:8548"
