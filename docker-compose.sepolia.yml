@@ -18,15 +18,15 @@ services:
     volumes:
       - ./hpp-sepolia-node-config.json:/config/nodeConfig.json
       - ./hpp-sepolia/data:/home/user/.arbitrum
-      - ./hpp-sepolia/latest-sepolia.tar:/home/user/snapshots.tar
+      - ./hpp-sepolia/snapshot-sepolia.tar:/home/user/snapshots.tar
     ports:
       - "8547:8547"
       - "8548:8548"
+    # Passing the configurations of http because they are not working by config file, but I don't know why.
     command:
       [
         "--init.url", "file:///home/user/snapshots.tar",
         "--conf.file", "/config/nodeConfig.json",
-        # Passing the configurations of http because they are not working by config file, but I don't know why.
         "--http.api", "web3,net,eth",
         "--http.addr", "0.0.0.0",
         "--http.corsdomain", "*"
