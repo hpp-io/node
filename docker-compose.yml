@@ -13,7 +13,7 @@ services:
     ]
 
   nitro-node:
-    image: ghcr.io/layr-labs/nitro/nitro-node:v3.7.4
+    image: ghcr.io/layr-labs/nitro/nitro-node:v3.8.0
     container_name: hpp-node-mainnet
     volumes:
       - ./hpp-mainnet-node-config.json:/config/nodeConfig.json
