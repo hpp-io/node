@@ -17,6 +17,9 @@
         "url": "wss://relay-hpp-sepolia-turdrv0107.t.conduit.xyz"
       }
     },
+    "staker": {
+      "enable": false
+    },
     "batch-poster": {
       "enable-eigenda-failover": true
     },

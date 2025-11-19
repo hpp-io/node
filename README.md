@@ -107,6 +107,9 @@ with the target chain. For additional details, refer to the [Configuration](#con
             "url": "wss://relay-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
           }
         },
+        "staker": {
+          "enable": false
+        },
         "batch-poster": {
           "enable-eigenda-failover": true
         },
