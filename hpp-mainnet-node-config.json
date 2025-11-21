@@ -20,13 +20,6 @@
     "staker": {
       "enable": false
     },
-    "batch-poster": {
-      "enable-eigenda-failover": true
-    },
-    "eigen-da": {
-      "enable": true,
-      "rpc": "http://localhost:3100"
-    },
     "data-availability": {
       "enable": true,
       "rest-aggregator": {
