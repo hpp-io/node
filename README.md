@@ -44,14 +44,6 @@ Please note that:
 
    If you are running the node on mainnet or testnet, refer to `.env.eigenda.mainnet` or `.env.eigenda.sepolia`
 
-   ```properties
-   # EigenDA Proxy - .env.eigenda.mainnet
-    EIGENDA_PROXY_EIGENDA_DISPERSER_RPC=disperser.eigenda.xyz:443
-    EIGENDA_PROXY_EIGENDA_STATUS_QUERY_INTERVAL=5s
-    EIGENDA_PROXY_EIGENDA_STATUS_QUERY_TIMEOUT=2400s
-    EIGENDA_PROXY_EIGENDA_ETH_RPC=https://ethereum-rpc.publicnode.com
-    EIGENDA_PROXY_EIGENDA_SERVICE_MANAGER_ADDR=0x870679E138bCdf293b7Ff14dD44b70FC97e12fc0
-   ```
 
 2. Download the snapshot of the HPP chain
 
@@ -62,9 +54,12 @@ Please note that:
    The following command downloads the snapshot for the mainnet.
    ```shell
    # download mainnet snapshot
-   curl -o hpp-mainnet/snapshot-mainnet.tar  https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
+   curl -o hpp-mainnet/snapshot-mainnet.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
    ```
-   You can download the snapshot for the testnet from the following link: https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
+   If you will run the testnet node, use below
+   ```shell
+   curl -o hpp-sepolia/snapshot-sepolia.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
+   ``
 
 3. Modifying the docker compose configuration (Optional)
 

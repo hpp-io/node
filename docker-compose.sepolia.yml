@@ -1,12 +1,12 @@
 version: '3.8'
 services:
   nitro-node:
-    image: ghcr.io/layr-labs/nitro/nitro-node:v3.8.0
+    image: offchainlabs/nitro-node:v3.9.5-66e42c4
     container_name: hpp-node-sepolia
     volumes:
       - ./hpp-sepolia-node-config.json:/config/nodeConfig.json
       - ./hpp-sepolia/data:/home/user/.arbitrum
-      - ./hpp-sepolia/latest-sepolia.tar:/home/user/snapshots.tar
+      - ./hpp-sepolia/snapshot-sepolia.tar:/home/user/snapshots.tar
     ports:
       - "8547:8547"
       - "8548:8548"
