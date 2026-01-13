@@ -101,5 +101,6 @@ elif [ "$OPERATION" = "status" ]; then
     echo "Node status: STOPPED"
   fi
 elif [ "$OPERATION" = "init" ]; then
+  echo "Initializing configuration of network $NETWORK"
   init_config "$NETWORK"
 fi
