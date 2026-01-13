@@ -40,129 +40,87 @@ Please note that:
 
 ### Running the Node
 
-1. Configure your L1 endpoints in the appropriate `.env` file:
+To run the node for mainnet, follow these steps:
+   ```bash
+   # initialize configuration file and download snapshot file if needed.
+   ./manage.sh init mainnet
+   # Starts the container for the mainnet 
+   ./manage.sh run mainnet
+   # Stops the container for the mainnet 
+   ./manage.sh stop mainnet  
+   # Clears the containers for the mainnet (but chain data will be not be deleted, you need to delete it manually)
+   ./manage.sh clear mainnet         
+   
+   # Check the running status of the node
+   ./manage.sh status
+   ```
 
-   If you are running the node on mainnet or testnet, refer to `.env.eigenda.mainnet` or `.env.eigenda.sepolia`
+To run the node for the testnet, follow these steps:
+   ```bash
+   # initialize configuration file and download snapshot file if needed.
+   ./manage.sh init sepolia
+   # Starts the container for the sepolia testnet 
+   ./manage.sh run sepolia
+   # Stops the container for the testnet 
+   ./manage.sh stop sepolia  
+   # Clears the containers for the testnet
+   ./manage.sh clear sepolia
+   ```
 
+### Advanced Usage
 
-2. Download the snapshot of the HPP chain
+1. Initialize configuration file
+    The configuration file contains the RPC endpoint and other parameters, but you need to modify L1 RPC and L1_BEACON_RPC parameters in a normal situation. 
+    The command `init` in script `manage.sh` can help you.
+
+   ```shell
+   # initialize configuration file and download snapshot file if needed.
+   ./manage.sh init mainnet
+   # initialize testnet 
+   ./manage.sh init sepolia
+    ```
+
+2. Download snapshot file
 
    HPP is a chain based on Arbitrum Nitro, and it supports synchronization from snapshots. 
    The default configuration file starts synchronization by reading the snapshot file located at the specified path. 
-   If the node has been inactive for more than two weeks since its last successful sync, it is recommended to resynchronize the node using a new snapshot
+   If the node has been inactive for more than two weeks since its last successful sync, it is recommended to resynchronize the node using a new snapshot.
 
-   The following command downloads the snapshot for the mainnet.
-   ```shell
+   The command `init` of `manage.sh` also downloads the snapshot if needed.
+
+   Or, you can download the snapshot manually.
+   ```bash
    # download mainnet snapshot
    curl -o hpp-mainnet/snapshot-mainnet.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
-   ```
-   If you will run the testnet node, use below
-   ```shell
+   # download sepolia snapshot
    curl -o hpp-sepolia/snapshot-sepolia.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
    ``
 
-3. Modifying the docker compose configuration (Optional)
+3. Start the node:
 
-   The default `docker-compose.yml` file is configured to synchronize using a snapshot. If you are not using a snapshot, you must remove the relevant settings from the configuration.
-
-   ```yaml
-   volumes:
-     # If snapshots are not used, remove the following line
-     - ./hpp-mainnet/snapshot-mainnet.tar:/hpp-mainnet/snapshot.tar:ro
-   # Remaining lines omitted for brevity
-   command:
-   [
-     # Remove the following line when snapshots are not used
-     "--init.url", "file:///home/user/snapshots.tar",
-   # Remaining lines omitted for brevity
+   You can use helper script `manage.sh` to start/stop the node:
+   ```bash
+   # Starts the container for the "sepolia" testnet
+   ./manage.sh run sepolia   
+   # Stops the container for the mainnet 
+   ./manage.sh stop mainnet  
+   # Clears the containers for the "mainnet" (default)
+   ./manage.sh clear         
    ```
+   
+   NOTE: you can run only one network at a time.
 
-4. Modify the configuration of Arbitrum Nitro
-
-   Update the required fields in the `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file to align 
-with the target chain. For additional details, refer to the [Configuration](#configuration) section below.
-
-     ```json
-       {
-      "chain": {
-        "info-json": "[{\"chain-id\":190415,\"parent-chain-id\":1,\"chain-name\":\"conduit-orbit-deployer\",\"chain-config\":{\"chainId\":190415,\"homesteadBlock\":0,\"daoForkBlock\":null,\"daoForkSupport\":true,\"eip150Block\":0,\"eip150Hash\":\"0x0000000000000000000000000000000000000000000000000000000000000000\",\"eip155Block\":0,\"eip158Block\":0,\"byzantiumBlock\":0,\"constantinopleBlock\":0,\"petersburgBlock\":0,\"istanbulBlock\":0,\"muirGlacierBlock\":0,\"berlinBlock\":0,\"londonBlock\":0,\"clique\":{\"period\":0,\"epoch\":0},\"arbitrum\":{\"EnableArbOS\":true,\"AllowDebugPrecompiles\":false,\"DataAvailabilityCommittee\":true,\"InitialArbOSVersion\":32,\"InitialChainOwner\":\"0xF91B7476e52374dD75fb3d598C5f2D5dc019fc90\",\"GenesisBlockNum\":0}},\"rollup\":{\"bridge\":\"0x9948eDFBb9e0b104bAd60393dBe79d0BC7937014\",\"inbox\":\"0xE0400a87d5Ee8a2Fc1dF2aAf4B6d8f89d0B9bE55\",\"sequencer-inbox\":\"0x9B26957a661bc862FA0d7eb21813Aa008d0Cc6E6\",\"rollup\":\"0xf0d2960a37B33567FF7507C2d59da021277663A1\",\"validator-utils\":\"0x84eA2523b271029FFAeB58fc6E6F1435a280db44\",\"validator-wallet-creator\":\"0x0A5eC2286bB15893d5b8f320aAbc823B2186BA09\",\"deployed-at\":22943219}}]",
-        "name": "conduit-orbit-deployer"
-      },
-      "parent-chain": {
-        "connection": {
-          "url": "https://ethereum-rpc.publicnode.com"
-        },
-        "blob-client": {
-          "beacon-url": "https://ethereum-beacon-api.publicnode.com"
-        }
-      },
-      "node": {
-        "feed": {
-          "input": {
-            "url": "wss://relay-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
-          }
-        },
-        "staker": {
-          "enable": false
-        },
-        "batch-poster": {
-          "enable-eigenda-failover": true
-        },
-        "eigen-da": {
-          "enable": true,
-          "rpc": "http://localhost:3100"
-        },
-        "data-availability": {
-          "enable": true,
-          "rest-aggregator": {
-            "enable": true,
-            "urls": "https://das-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
-          }
-        }
-      },
-      "execution": {
-        "forwarding-target": "https://mainnet.hpp.io"
-      },
-      "http": {
-        "api": "net,web3,eth",
-        "corsdomain": "*",
-        "addr": "0.0.0.0",
-        "vhosts": "*"
-      }
-    }
-    ```
-5. Start the node:
-
+   You can alternatively use docker compose directly: 
    ```bash
    # For mainnet (default):
    docker compose up --build
 
    # For testnet:
    docker compose -f docker-compose.sepolia.yml up --build
-
-   ```
-
-   You can alternatively use helper script `manage.sh` to start/stop the node:
-
-   ```bash
-   ./manage.sh run           # Starts the container for the mainnet (default)
-   ./manage.sh run sepolia   # Starts the container for the "sepolia" testnet
-   ./manage.sh stop mainnet  # Stops the container for the mainnet 
-   ./manage.sh clear         # Clears the containers for the "mainnet" (default)
    ```
 
 ## Configuration
 
-### Required Settings
-
-These fields in example files contain URLs for public RPC endpoints with rate limits. For production use, you must replace them with your own unlimited RPC endpoints.
-
-- `.env` file
-  - `EIGENDA_PROXY_EIGENDA_ETH_RPC`: The URL of the Ethereum L1 node RPC endpoint
-- `hpp-mainnet-node-config.json` or `hpp-sepolia-node-config.json` file
-  - `parent-chain.connection.url`: The URL of the Ethereum L1 node RPC endpoint
-  - `parent-chain.blob-client.beacon-url`: The URL of the Ethereum L1 beacon node endpoint
-  - `node.eigen-da.rpc`: The URL of the EigenDA RPC endpoint
 
 #### RPC endpoint
 
@@ -173,9 +131,6 @@ by the service.
 
 For instance, when using Alchemy RPC, the RPC endpoint should be defined in the configuration as follows:
 
-```properties
-EIGENDA_PROXY_EIGENDA_ETH_RPC=https://eth-mainnet.g.alchemy.com/v2/3AbCdEfGh78JkL_zPxDdf
-```
 
 ## Supported Networks
 
