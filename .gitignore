@@ -5,3 +5,5 @@
 /.env
 /hpp-mainnet
 /hpp-sepolia
+/hpp-mainnet-node-config.json
+/hpp-sepolia-node-config.json
