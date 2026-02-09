@@ -71,6 +71,10 @@ if [ "$OPERATION" = "run" ]; then
 
   # Check if the data directory is empty, and the snapshot file is required if data is empty.
   if [ ! -d "$DATA_DIR" ] || [ -z "$(ls -A "$DATA_DIR" 2>/dev/null)" ]; then
+    # create data directory if missing
+    echo "Creating data directory: $DATA_DIR"
+    mkdir -p "$DATA_DIR"
+
     if [ ! -f "$SNAPSHOT_FILE" ]; then
       MISSING_FILES="$MISSING_FILES $SNAPSHOT_FILE (required for first run)"
     fi
