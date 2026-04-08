@@ -122,14 +122,25 @@ To run the node for the testnet, follow these steps:
 ## Configuration
 
 
-#### RPC endpoint
+#### L1 RPC endpoint
 
-The RPC endpoint provided in the example configuration, `https://ethereum-rpc.publicnode.com`, is a free service 
-that is not enough for use in the node due to the usage limits. It is recommended to use an unlimited RPC endpoint 
-service. Users must subscribe to such a service and replace the example configuration with the RPC endpoint provided 
-by the service.
+The L1 RPC endpoint provided in the example configuration, `https://ethereum-rpc.publicnode.com`, is a free service 
+that may have usage limits. For production use with higher traffic, it is recommended to use a dedicated RPC endpoint 
+service (e.g., Alchemy, Infura, or dRPC). Replace the RPC endpoint in the configuration as needed.
 
-For instance, when using Alchemy RPC, the RPC endpoint should be defined in the configuration as follows:
+#### HPP RPC endpoint
+
+The public HPP RPC (`https://mainnet.hpp.io`) has rate limits in place. If you need higher throughput for development, 
+operations, or team usage, you can get a dedicated RPC endpoint with an API key through Conduit:
+
+1. Sign up at [app.conduit.xyz](https://app.conduit.xyz)
+2. Navigate to **HPP Mainnet** (or **HPP Sepolia**) and go to **Node** > **RPC**
+3. Generate an API key
+4. Use the provided RPC URL:
+   - Mainnet: `https://mainnet.hpp.io/<YOUR_API_KEY>`
+   - Sepolia: `https://sepolia.hpp.io/<YOUR_API_KEY>`
+
+This gives you higher rate limits and more reliable access compared to the public endpoint.
 
 
 ## Supported Networks
