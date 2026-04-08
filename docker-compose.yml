@@ -1,6 +1,6 @@
 services:
   nitro-node:
-    image: offchainlabs/nitro-node:v3.9.5-66e42c4
+    image: offchainlabs/nitro-node:v3.9.8-4624977
     container_name: hpp-node-mainnet
     volumes:
       - ./hpp-mainnet-node-config.json:/config/nodeConfig.json
