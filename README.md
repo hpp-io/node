@@ -1,162 +1,195 @@
-![HPP](./assets/HPP_primary_black.svg)
+<p align="center">
+  <img src="assets/HPP_primary_black.svg" alt="HPP" width="320">
+</p>
 
 # Overview
 
-House Party Protocol (HPP) is a cost-efficient, scalable, and developer-friendly Layer 2 (L2) network built on the 
-Arbitrum Orbit. Secured by Ethereum and enhanced through data availability with Eigen DA, HPP delivers modular and 
-performant infrastructure for the next generation of decentralized applications.
+House Party Protocol (HPP) Mainnet is a cost-efficient, scalable, and
+developer-friendly **Ethereum L2** built on the **Arbitrum Nitro Stack**.
+Secured by Ethereum and operating in **AnyTrust** data availability mode,
+HPP Mainnet delivers modular, performant infrastructure for the next
+generation of decentralized applications.
 
-This repository contains Docker builds and guide to run your own node on the HPP network.
+This repository contains the Docker build and the guide to run your own
+node on the HPP network.
 
 ## Requirements
 
 ### Minimum hardware configuration
 
-The following is the minimum hardware configuration required to set up a Nitro full node (not archival):
+The following is the minimum hardware configuration required to set up a
+Nitro full node (not archival):
 
 | Resource     | Recommended                                   |
-|--------------|-----------------------------------------------|
+| ------------ | --------------------------------------------- |
 | RAM          | 16 GB                                         |
-| CPU          | 4 core CPU (for AWS, a t3 xLarge instance)    |
+| CPU          | 4 core CPU (for AWS, a t3.xlarge instance)    |
 | Storage Type | NVMe SSD drives are recommended               |
-| Storage size | Depends on the chain and its traffic overtime |
+| Storage size | Depends on the chain and its traffic over time |
 
 Please note that:
 
-* These minimum requirements for RAM and CPU are recommended for nodes that process a small number of RPC requests. For
-  nodes that require processing multiple simultaneous requests, both RAM and number of CPU cores will need to be scaled
-  with the amount of traffic being served.
-* Single core performance is important. If the node is falling behind and a single core is 100% busy, it is recommended
-  to update to a faster processor
-* The minimum storage requirements will change over time as the chain grows. Using more than the minimum requirements to
-  run a robust full node is recommended.
+- These minimum requirements for RAM and CPU are recommended for nodes
+  that process a small number of RPC requests. For nodes that need to
+  process multiple simultaneous requests, both RAM and CPU core count
+  should be scaled with the amount of traffic being served.
+- Single-core performance matters. If the node is falling behind and a
+  single core is pegged at 100%, move to a faster processor.
+- Minimum storage requirements grow over time as the chain grows. Using
+  more than the minimum is recommended for a robust full node.
 
 ### Prerequisites
 
-1. Download and install [Docker](https://www.docker.com/), ensure it is running.
-2. Unlimited rate limit Ethereum RPC endpoint and beacon chain RPC endpoint
+1. Install [Docker](https://www.docker.com/) and make sure it is running.
+2. An unlimited-rate Ethereum L1 RPC endpoint and an L1 Beacon Chain RPC
+   endpoint.
 
 ## Quick Start
 
 ### Running the Node
 
-To run the node for mainnet, follow these steps:
-   ```bash
-   # initialize configuration file and download snapshot file if needed.
-   ./manage.sh init mainnet
-   # Starts the container for the mainnet 
-   ./manage.sh run mainnet
-   # Stops the container for the mainnet 
-   ./manage.sh stop mainnet  
-   # Clears the containers for the mainnet (but chain data will be not be deleted, you need to delete it manually)
-   ./manage.sh clear mainnet         
-   
-   # Check the running status of the node
-   ./manage.sh status
-   ```
+To run a mainnet node:
 
-To run the node for the testnet, follow these steps:
-   ```bash
-   # initialize configuration file and download snapshot file if needed.
-   ./manage.sh init sepolia
-   # Starts the container for the sepolia testnet 
-   ./manage.sh run sepolia
-   # Stops the container for the testnet 
-   ./manage.sh stop sepolia  
-   # Clears the containers for the testnet
-   ./manage.sh clear sepolia
-   ```
+```bash
+# Initialize the config file and download the snapshot if needed.
+./manage.sh init mainnet
+# Start the mainnet container
+./manage.sh run mainnet
+# Stop the mainnet container
+./manage.sh stop mainnet
+# Clear the mainnet containers (chain data is NOT deleted — remove it manually)
+./manage.sh clear mainnet
+
+# Check node status
+./manage.sh status
+```
+
+To run a testnet (Sepolia) node:
+
+```bash
+# Initialize the config file and download the snapshot if needed.
+./manage.sh init sepolia
+# Start the Sepolia testnet container
+./manage.sh run sepolia
+# Stop the testnet container
+./manage.sh stop sepolia
+# Clear the testnet containers
+./manage.sh clear sepolia
+```
 
 ### Advanced Usage
 
-1. Initialize configuration file
-    The configuration file contains the RPC endpoint and other parameters, but you need to modify L1 RPC and L1_BEACON_RPC parameters in a normal situation. 
-    The command `init` in script `manage.sh` can help you.
+**1. Initialize the configuration file**
 
-   ```shell
-   # initialize configuration file and download snapshot file if needed.
-   ./manage.sh init mainnet
-   # initialize testnet 
-   ./manage.sh init sepolia
-    ```
+The configuration file contains the RPC endpoint and other parameters.
+In a normal setup you only need to modify the `L1_RPC` and `L1_BEACON_RPC`
+parameters. The `init` command in `manage.sh` handles this for you:
 
-2. Download snapshot file
+```bash
+# Initialize mainnet config (downloads snapshot if needed)
+./manage.sh init mainnet
+# Initialize testnet config
+./manage.sh init sepolia
+```
 
-   HPP is a chain based on Arbitrum Nitro, and it supports synchronization from snapshots. 
-   The default configuration file starts synchronization by reading the snapshot file located at the specified path. 
-   If the node has been inactive for more than two weeks since its last successful sync, it is recommended to resynchronize the node using a new snapshot.
+**2. Download the snapshot file**
 
-   The command `init` of `manage.sh` also downloads the snapshot if needed.
+HPP is built on the Arbitrum Nitro Stack and supports synchronization
+from snapshots. The default config starts syncing by reading the snapshot
+at the configured path. If a node has been inactive for more than two
+weeks since its last successful sync, re-sync from a fresh snapshot.
 
-   Or, you can download the snapshot manually.
-   ```bash
-   # download mainnet snapshot
-   curl -o hpp-mainnet/snapshot-mainnet.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
-   # download sepolia snapshot
-   curl -o hpp-sepolia/snapshot-sepolia.tar https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
-   ``
+The `init` command also downloads the snapshot if needed. To download
+manually:
 
-3. Start the node:
+```bash
+# Mainnet snapshot
+curl -o hpp-mainnet/snapshot-mainnet.tar \
+  https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
+# Sepolia snapshot
+curl -o hpp-sepolia/snapshot-sepolia.tar \
+  https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
+```
 
-   You can use helper script `manage.sh` to start/stop the node:
-   ```bash
-   # Starts the container for the "sepolia" testnet
-   ./manage.sh run sepolia   
-   # Stops the container for the mainnet 
-   ./manage.sh stop mainnet  
-   # Clears the containers for the "mainnet" (default)
-   ./manage.sh clear         
-   ```
-   
-   NOTE: you can run only one network at a time.
+**3. Start the node**
 
-   You can alternatively use docker compose directly: 
-   ```bash
-   # For mainnet (default):
-   docker compose up --build
+Use the `manage.sh` helper to start/stop the node:
 
-   # For testnet:
-   docker compose -f docker-compose.sepolia.yml up --build
-   ```
+```bash
+# Start the Sepolia testnet container
+./manage.sh run sepolia
+# Stop the mainnet container
+./manage.sh stop mainnet
+# Clear the mainnet containers (default)
+./manage.sh clear
+```
+
+> **NOTE:** You can run only one network at a time.
+
+You can also use Docker Compose directly:
+
+```bash
+# Mainnet (default)
+docker compose up --build
+
+# Testnet
+docker compose -f docker-compose.sepolia.yml up --build
+```
 
 ## Configuration
 
-
 #### L1 RPC endpoint
 
-The L1 RPC endpoint provided in the example configuration, `https://ethereum-rpc.publicnode.com`, is a free service 
-that may have usage limits. For production use with higher traffic, it is recommended to use a dedicated RPC endpoint 
-service (e.g., Alchemy, Infura, or dRPC). Replace the RPC endpoint in the configuration as needed.
+The L1 RPC endpoint in the example config,
+`https://ethereum-rpc.publicnode.com`, is a free service that may have
+usage limits. For production use with higher traffic, use a dedicated RPC
+endpoint (e.g. Alchemy, Infura, or dRPC) and replace the endpoint in the
+config as needed.
 
 #### HPP RPC endpoint
 
-The public HPP RPC (`https://mainnet.hpp.io`) has rate limits in place. If you need higher throughput for development, 
-operations, or team usage, you can get a dedicated RPC endpoint with an API key through Conduit:
+The public HPP RPC (`https://mainnet.hpp.io`) is rate-limited. If you need
+higher throughput for development, operations, or team usage, get a
+dedicated RPC endpoint with an API key through Conduit:
 
 1. Sign up at [app.conduit.xyz](https://app.conduit.xyz)
-2. Navigate to **HPP Mainnet** (or **HPP Sepolia**) and go to **Node** > **RPC**
+2. Go to **HPP Mainnet** (or **HPP Sepolia**) → **Node** → **RPC**
 3. Generate an API key
 4. Use the provided RPC URL:
    - Mainnet: `https://mainnet.hpp.io/<YOUR_API_KEY>`
    - Sepolia: `https://sepolia.hpp.io/<YOUR_API_KEY>`
 
-This gives you higher rate limits and more reliable access compared to the public endpoint.
-
+This gives higher rate limits and more reliable access than the public
+endpoint.
 
 ## Supported Networks
 
-| Network | Status |
-|---------|--------|
-| Mainnet | ✅      |
-| Testnet | ✅      |
+| Network      | Status |
+| ------------ | ------ |
+| HPP Mainnet  | ✅     |
+| HPP Sepolia  | ✅     |
+
+## Network Parameters
+
+| Parameter        | Value                                        |
+| ---------------- | -------------------------------------------- |
+| Network          | HPP Mainnet (Ethereum L2)                    |
+| Stack            | Arbitrum Nitro Stack (v3.9.8, ArbOS 51)      |
+| Data Availability | AnyTrust                                     |
+| Chain ID         | 190415                                       |
+| Native Gas Token | ETH                                          |
+| RPC Endpoint     | https://mainnet.hpp.io                        |
+| Block Explorer   | https://explorer.hpp.io                       |
 
 ## Troubleshooting
 
-For support please join discussions on [Telegram](https://t.me/aergoofficial), or open a new GitHub issue.
+For support, join the discussion on
+[Telegram](https://t.me/aergoofficial) or open a new GitHub issue.
 
 ## Disclaimer
 
-THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or
-security. Usage is subject to applicable laws and regulations.
+THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We
+make no guarantees about asset protection or security. Usage is subject
+to applicable laws and regulations.
 
 For more information, visit [docs.hpp.io](https://docs.hpp.io/).
