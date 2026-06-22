@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 설정 초기화 함수
+# Initialize the node configuration
 init_config() {
   NETWORK=$1
   echo "network is $NETWORK"
@@ -10,14 +10,14 @@ init_config() {
     DEFAULT_L1_RPC="https://ethereum-rpc.publicnode.com"
     DEFAULT_L1_BEACON="https://ethereum-beacon-api.publicnode.com"
     SNAPSHOT_FILE="hpp-mainnet/snapshot-mainnet.tar"
-    SNAPSHOT_DOWNLOWD_URL="https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar"
+    SNAPSHOT_DOWNLOAD_URL="https://snapshot.hpp.io/mainnet/latest.tar"
   else
     TEMPLATE="templates/hpp-sepolia-node-template.json"
     TARGET="hpp-sepolia-node-config.json"
     DEFAULT_L1_RPC="https://ethereum-sepolia-rpc.publicnode.com"
     DEFAULT_L1_BEACON="https://ethereum-sepolia-beacon-api.publicnode.com"
     SNAPSHOT_FILE="hpp-sepolia/snapshot-sepolia.tar"
-    SNAPSHOT_DOWNLOWD_URL="https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar"
+    SNAPSHOT_DOWNLOAD_URL="https://snapshot.hpp.io/sepolia/latest.tar"
   fi
 
   if [ -f "$TARGET" ]; then
@@ -29,18 +29,18 @@ init_config() {
     fi
   fi
 
-  # 사용자로부터 설정값 입력 받기 (기본값 표시)
+  # Prompt for configuration values (defaults shown in brackets)
   echo "Configuring $NETWORK node..."
   printf "Enter L1 RPC Endpoint [$DEFAULT_L1_RPC]: "
   read L1_RPC
   printf "Enter L1 Beacon API Endpoint [$DEFAULT_L1_BEACON]: "
   read L1_BEACON
 
-  # 입력값이 없으면 기본값 사용
+  # Fall back to defaults when no input is given
   L1_RPC=${L1_RPC:-$DEFAULT_L1_RPC}
   L1_BEACON=${L1_BEACON:-$DEFAULT_L1_BEACON}
 
-    # 템플릿 파일 읽어서 변수 치환 후 저장
+  # Read the template, substitute variables, and write the result
   sed -e "s|<L1_RPC_ENDPOINT>|$L1_RPC|g" \
       -e "s|<L1_BEACON_API_ENDPOINT>|$L1_BEACON|g" \
       "$TEMPLATE" > "$TARGET"
@@ -57,7 +57,7 @@ init_config() {
     printf "Would you like to download it now? (y/N): "
     read DOWNLOAD_CONFIRM
     if [ "$DOWNLOAD_CONFIRM" = "y" ] || [ "$DOWNLOAD_CONFIRM" = "Y" ]; then
-      download_snapshot "$NETWORK" "$SNAPSHOT_DOWNLOWD_URL" "$SNAPSHOT_FILE"
+      download_snapshot "$NETWORK" "$SNAPSHOT_DOWNLOAD_URL" "$SNAPSHOT_FILE"
       if [ $? -ne 0 ]; then
         exit 105
       fi
@@ -67,7 +67,7 @@ init_config() {
 }
 
 
-    # 스냅샷 다운로드 함수
+    # Download the snapshot
     download_snapshot() {
       NETWORK=$1
       URL=$2

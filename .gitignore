@@ -7,3 +7,6 @@
 /hpp-sepolia
 /hpp-mainnet-node-config.json
 /hpp-sepolia-node-config.json
+
+# wrangler R2 upload local simulator state
+/.wrangler

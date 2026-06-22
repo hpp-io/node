@@ -99,16 +99,19 @@ from snapshots. The default config starts syncing by reading the snapshot
 at the configured path. If a node has been inactive for more than two
 weeks since its last successful sync, re-sync from a fresh snapshot.
 
+Snapshots are hosted by HPP and served from `https://snapshot.hpp.io` —
+no GCP account or credentials are required.
+
 The `init` command also downloads the snapshot if needed. To download
 manually:
 
 ```bash
 # Mainnet snapshot
 curl -o hpp-mainnet/snapshot-mainnet.tar \
-  https://storage.googleapis.com/conduit-networks-snapshots/hpp-mainnet-xeajiyxsci/latest.tar
+  https://snapshot.hpp.io/mainnet/latest.tar
 # Sepolia snapshot
 curl -o hpp-sepolia/snapshot-sepolia.tar \
-  https://storage.googleapis.com/conduit-networks-snapshots/hpp-sepolia-turdrv0107/latest.tar
+  https://snapshot.hpp.io/sepolia/latest.tar
 ```
 
 **3. Start the node**
