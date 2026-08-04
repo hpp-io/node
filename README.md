@@ -99,6 +99,21 @@ from snapshots. The default config starts syncing by reading the snapshot
 at the configured path. If a node has been inactive for more than two
 weeks since its last successful sync, re-sync from a fresh snapshot.
 
+> **A snapshot is the only recovery path.** HPP runs in AnyTrust mode, and
+> the DAC does not retain batch data indefinitely. A node whose chain data
+> is damaged cannot be re-synced from genesis — it stops with
+> `failed to fetch batch mentioned by batch posting report`. To recover,
+> delete the data directory and start again from a snapshot:
+>
+> ```bash
+> docker compose down -t 300
+> rm -rf hpp-mainnet/data
+> ./manage.sh init mainnet && ./manage.sh run mainnet
+> ```
+>
+> Extracting the snapshot takes about a minute; catching up 43 days of
+> history takes roughly 28 minutes with the tuning profile applied.
+
 Snapshots are hosted by HPP and served from `https://snapshot.hpp.io` —
 no GCP account or credentials are required.
 
@@ -129,6 +144,18 @@ Use the `manage.sh` helper to start/stop the node:
 
 > **NOTE:** You can run only one network at a time.
 
+> **Always give the node time to shut down.** `docker compose down`
+> defaults to a 10-second grace period before sending SIGKILL. A node
+> holding several GB of cached state cannot flush it in that window, and
+> the chain data ends up corrupted — on the next start it falls back to
+> `Loaded most recent local block number=0` and the log index is reset.
+> Recovery then requires a full snapshot restore. Always stop with an
+> explicit timeout:
+>
+> ```bash
+> docker compose down -t 300
+> ```
+
 You can also use Docker Compose directly:
 
 ```bash
@@ -148,6 +175,44 @@ The L1 RPC endpoint in the example config,
 usage limits. For production use with higher traffic, use a dedicated RPC
 endpoint (e.g. Alchemy, Infura, or dRPC) and replace the endpoint in the
 config as needed.
+
+#### Performance tuning (optional but recommended)
+
+The default `inbox-reader` and cache settings are conservative. This
+repository ships tuning profiles that speed up the initial sync
+substantially and reduce L1 request volume at the same time:
+
+- `templates/hpp-mainnet-node-tuning.json` — for 16 GB hosts
+- `templates/hpp-sepolia-node-tuning.json` — for 8 GB hosts
+
+`--conf.file` accepts multiple files and merges them, so the profile can
+be layered on top of the generated config:
+
+```bash
+--conf.file /config/nodeConfig.json
+--conf.file /config/tuning.json
+```
+
+Mount the file alongside the node config in `docker-compose.yml`, or copy
+the `node.inbox-reader` and `execution.caching` blocks straight into your
+`hpp-<network>-node-config.json`.
+
+Measured on a mainnet node syncing 233,742 blocks from a snapshot:
+
+| Configuration            | Sync speed      | Time to tip | L1 requests |
+| ------------------------ | --------------- | ----------- | ----------- |
+| Alchemy free, 9 blocks   | 36 L1 blocks/s  | 2h 15m+     | ~33,000     |
+| Defaults (100 / 2000)    | 48 blocks/s     | ~90 min     | —           |
+| **Tuning profile**       | **213 blocks/s**| **~28 min** | **2,657**   |
+
+> **IMPORTANT:** These profiles assume an L1 endpoint that accepts
+> `eth_getLogs` over wide block ranges. Applying them to a provider with a
+> narrow range limit (for example Alchemy's free tier, capped at 10 blocks)
+> will cause the inbox reader to fail.
+
+Cache values are sized for the host, not the network: use the mainnet
+profile on a 16 GB machine and the Sepolia profile on 8 GB. Without
+tuning the node uses only ~1.4 GB of RAM; with it, ~4.3 GB.
 
 #### HPP RPC endpoint
 
