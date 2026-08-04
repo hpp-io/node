@@ -1,0 +1,16 @@
+{
+  "node": {
+    "inbox-reader": {
+      "default-blocks-to-read": 2000,
+      "max-blocks-to-read": 10000,
+      "target-messages-read": 5000
+    }
+  },
+  "execution": {
+    "caching": {
+      "database-cache": 3072,
+      "trie-dirty-cache": 2048,
+      "trie-clean-cache": 1024
+    }
+  }
+}
