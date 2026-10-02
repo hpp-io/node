@@ -20,11 +20,13 @@
     "staker": {
       "enable": false
     },
-    "data-availability": {
-      "enable": true,
-      "rest-aggregator": {
+    "da": {
+      "anytrust": {
         "enable": true,
-        "urls": "https://das-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
+        "rest-aggregator": {
+          "enable": true,
+          "urls": "https://das-hpp-mainnet-xeajiyxsci.t.conduit.xyz"
+        }
       }
     }
   },
