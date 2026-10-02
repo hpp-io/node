@@ -242,7 +242,7 @@ endpoint.
 | Parameter        | Value                                        |
 | ---------------- | -------------------------------------------- |
 | Network          | HPP Mainnet (Ethereum L2)                    |
-| Stack            | Arbitrum Nitro Stack (v3.9.8, ArbOS 51)      |
+| Stack            | Arbitrum Nitro Stack (v3.11.4, ArbOS 51)     |
 | Data Availability | AnyTrust                                     |
 | Chain ID         | 190415                                       |
 | Native Gas Token | ETH                                          |
